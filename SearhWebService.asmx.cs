@@ -89,5 +89,62 @@ namespace WebServiceRecordSystem
                 return null;
             }
         }
-     }
+
+        [WebMethod]
+        public int HowManyAdress(string id)
+        {
+            string connetionString;
+            SqlConnection cnn;
+            SqlCommand cmd2;
+
+            connetionString = @"Data Source=EM-SEMRA-K;Initial Catalog=master;Integrated Security=True";
+            cnn = new SqlConnection(connetionString);
+            cnn.Open();
+
+            string query2 = "SELECT COUNT(StudentId) FROM [dbo].[Adresses] WHERE StudentId like '" + id + "'";
+            cmd2 = new SqlCommand(query2, cnn);
+            SqlDataReader read2 = cmd2.ExecuteReader();
+            read2.Read();
+            string recordCount2 = read2[0].ToString();
+
+            cnn.Close();
+
+            return Convert.ToInt32(recordCount2);
+        }
+
+        [WebMethod]
+        public Adress GetAdress(string StudentIdToPrint, int adressNo)
+        {
+            try
+            {
+                Adress adressToReturn = new Adress();
+                string connectionString;
+                SqlConnection sqlConnection;
+                SqlCommand sqlCommand;
+
+                connectionString = @"Data Source=EM-SEMRA-K;Initial Catalog=master;Integrated Security=True";
+                sqlConnection = new SqlConnection(connectionString);
+                sqlConnection.Open();
+
+                string querySelectStudent = "SELECT * FROM [dbo].[Adresses] WHERE StudentId like '" + StudentIdToPrint + "' and AdressNo = "+ adressNo;
+                sqlCommand = new SqlCommand(querySelectStudent, sqlConnection);
+                SqlDataReader read = sqlCommand.ExecuteReader();
+                read.Read();
+
+                adressToReturn.Street= read[2].ToString();
+                adressToReturn.Neighborhood = read[3].ToString();
+                adressToReturn.District = read[4].ToString();
+                adressToReturn.State = read[5].ToString();
+
+                sqlConnection.Close();
+                return adressToReturn;
+            }
+            catch (Exception exception)
+            {
+                //Log.writeToLogFile(DateTime.Now.ToString() + " " + exception.Message);
+                Console.WriteLine(exception.Message);
+                return null;
+            }
+        }
+    }
 }
