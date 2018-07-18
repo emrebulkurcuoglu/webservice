@@ -1,27 +1,23 @@
-﻿using studenrecordsystem;
+﻿using log4net;
+using studenrecordsystem;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.Web.Services;
 
 namespace WebServiceRecordSystem
 {
-    /// <summary>
-    /// Summary description for SearhWebService
-    /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
-    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-    // [System.Web.Script.Services.ScriptService]
+
     public class SearhWebService : System.Web.Services.WebService
     {
+        ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         [WebMethod]
         public int FindRecord(string StudentIdToFindStudent)
         {
+            Log.Info("Find record is called");
             try
             {
                 string connectionString;
@@ -48,15 +44,17 @@ namespace WebServiceRecordSystem
 
             catch (Exception exception)
             {
-                //Log.writeToLogFile(DateTime.Now.ToString() + " " + exception.Message);
-                Console.WriteLine(exception.Message);
+                
+                Log.Error(exception.Message);
                 return 0;
             }
         }
 
         [WebMethod]
         public Student GetStudent(string StudentIdToPrint)
+
         {
+            Log.Info("GetStudent is called");
             try
             {
                 Student studentToReturn = new Student();
@@ -84,8 +82,8 @@ namespace WebServiceRecordSystem
             }
             catch (Exception exception)
             {
-                //Log.writeToLogFile(DateTime.Now.ToString() + " " + exception.Message);
-                Console.WriteLine(exception.Message);
+
+                Log.Error(exception.Message);
                 return null;
             }
         }
@@ -93,28 +91,41 @@ namespace WebServiceRecordSystem
         [WebMethod]
         public int HowManyAdress(string id)
         {
-            string connetionString;
-            SqlConnection cnn;
-            SqlCommand cmd2;
+            Log.Info("HowManyAdress is called");
+            try
+            {
+                string connetionString;
+                SqlConnection cnn;
+                SqlCommand cmd2;
 
-            connetionString = @"Data Source=EM-SEMRA-K;Initial Catalog=master;Integrated Security=True";
-            cnn = new SqlConnection(connetionString);
-            cnn.Open();
+                connetionString = @"Data Source=EM-SEMRA-K;Initial Catalog=master;Integrated Security=True";
+                cnn = new SqlConnection(connetionString);
+                cnn.Open();
 
-            string query2 = "SELECT COUNT(StudentId) FROM [dbo].[Adresses] WHERE StudentId like '" + id + "'";
-            cmd2 = new SqlCommand(query2, cnn);
-            SqlDataReader read2 = cmd2.ExecuteReader();
-            read2.Read();
-            string recordCount2 = read2[0].ToString();
+                string query2 = "SELECT COUNT(StudentId) FROM [dbo].[Adresses] WHERE StudentId like '" + id + "'";
+                cmd2 = new SqlCommand(query2, cnn);
+                SqlDataReader read2 = cmd2.ExecuteReader();
+                read2.Read();
+                string recordCount2 = read2[0].ToString();
 
-            cnn.Close();
+                cnn.Close();
+                return Convert.ToInt32(recordCount2);
+            }
+            
 
-            return Convert.ToInt32(recordCount2);
+            catch (Exception exception)
+            {
+
+                Log.Error(exception.Message);
+                return -1;
+            }
+            
         }
 
         [WebMethod]
         public Adress GetAdress(string StudentIdToPrint, int adressNo)
         {
+            Log.Info("GetAdress is called");
             try
             {
                 Adress adressToReturn = new Adress();
@@ -141,8 +152,8 @@ namespace WebServiceRecordSystem
             }
             catch (Exception exception)
             {
-                //Log.writeToLogFile(DateTime.Now.ToString() + " " + exception.Message);
-                Console.WriteLine(exception.Message);
+
+                Log.Error(exception.Message);
                 return null;
             }
         }

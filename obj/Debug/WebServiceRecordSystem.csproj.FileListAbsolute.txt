@@ -56,3 +56,5 @@ C:\Users\emre.bulkurcuoglu\Desktop\studenrecordsystem\WebServiceRecordSystem\obj
 C:\Users\emre.bulkurcuoglu\Desktop\studenrecordsystem\WebServiceRecordSystem\obj\Debug\WebServiceRecordSystem.dll
 C:\Users\emre.bulkurcuoglu\Desktop\studenrecordsystem\WebServiceRecordSystem\obj\Debug\WebServiceRecordSystem.pdb
 C:\Users\emre.bulkurcuoglu\Desktop\studenrecordsystem\WebServiceRecordSystem\obj\Debug\WebServiceRecordSystem.csprojAssemblyReference.cache
+C:\Users\emre.bulkurcuoglu\Desktop\studenrecordsystem\WebServiceRecordSystem\bin\log4net.dll
+C:\Users\emre.bulkurcuoglu\Desktop\studenrecordsystem\WebServiceRecordSystem\bin\log4net.xml
